@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FabricJS</title>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="fabric.min.js"></script>
+   
+</head>
+<body>
+    <!-- <canvas id="canvas"></canvas>
+    <div id="toolbar">
+        <button class="btn" id="adding-line">Add line</button>
+        <button class="btn" id="deactivate">Deactivate </button>
+    </div> -->
+    <div class="main-container">
+
+   
+    <div class="switchsvg">
+        <div class="front" value="front">Front</div>
+        <div class="bottom" value="bottom">Bottom</div>
+        <div class="front_pocket" value="front_pocket">Fpocket</div>
+        <div class="side1" value="side1">side1</div>
+        <div class="side2" value="side2">side2</div>
+        <div class="top_pocket" value="top_pocket">Tpocket</div>
+    </div>
+    <div id="c-left">
+        <h3>Renderer</h3>
+        <div id="renderer"></div>
+        
+    </div>
+
+    <div id="c-right">
+        <h3>Canvas</h3>
+        <div class="wrapper-main">
+            <canvas id="canvas" width="512" height="512"></canvas>
+        </div>
+       
+      
+        <div class="wrapper">
+            <canvas id="maincanvas" width="512" height="512"></canvas>
+        </div>
+    </div>
+   
+    <div id="c-overlap">
+       
+       
+       
+    </div>
+    <!-- <button id="hue">Change to random color</button> -->
+    <!-- <canvas id="c" width=600 height=600 ></canvas> -->
+    <div class="popup">
+       <div class="pattern1">
+       pattern1
+       </div>
+       <div class="pattern2">
+        pattern2
+       </div>
+       <div class="pattern3">
+        pattern3
+       </div>
+       <div class="pattern4">
+        pattern4
+       </div>
+       <div class="pattern5">
+        pattern5
+       </div>
+        <div id="bottom">
+            <button class="ok">Ok</button>
+            <button class="cancel">Cancel</button>
+        </div>
+       
+    </div>
+    <div class="menu">
+    <button class="pattern">Add pattern</button>
+    <button class="crop">Crop</button>
+    <button class="applycolor">Apply color</button>
+    <button class="select">Select All</button>
+    <button class="deselect">Deselect</button>
+
+    </div>
+</div>
+    
+    <script type="module" src="sample1.js"></script>
+    <script src=
+    "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+        </script>
+        <script>$flag = -1;
+ 
+
+  
+        </script>
+</body>
+</html>

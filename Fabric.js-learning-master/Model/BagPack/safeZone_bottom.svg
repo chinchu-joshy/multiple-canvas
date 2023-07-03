@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.3.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="DELETE-Seam_Lines_x2C__Safe_Zones"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512"
+	 style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#2D72B7;stroke-width:0.6994535;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:#2D72B7;stroke-width:0.6994535;stroke-miterlimit:10;stroke-dasharray:5.2793646,5.2793646;}
+	.st2{fill:none;stroke:#2D72B7;stroke-width:0.6994535;stroke-miterlimit:10;stroke-dasharray:5.5123801,5.5123801;}
+	.st3{fill:none;stroke:#2D72B7;stroke-width:0.6994535;stroke-miterlimit:10;stroke-dasharray:5.5123806,5.5123806;}
+</style>
+<g id="safeZone_x5F_bottom">
+	<g>
+		<g>
+			<polyline class="st0" points="456.0501709,33.1976929 458.6743164,33.1976929 458.673584,35.8217773 			"/>
+			<line class="st1" x1="458.6723633" y1="41.1011353" x2="458.5684814" y2="481.9281006"/>
+			<polyline class="st0" points="458.5678711,484.567749 458.5672607,487.1917725 455.9432373,487.1917725 			"/>
+			<line class="st2" x1="450.4307861" y1="487.1917725" x2="387.0384521" y2="487.1917725"/>
+			<polyline class="st0" points="384.2822266,487.1917725 381.6582031,487.1917725 381.6588135,484.567749 			"/>
+			<line class="st1" x1="381.6600342" y1="479.2884521" x2="381.763916" y2="38.4614258"/>
+			<polyline class="st0" points="381.7645264,35.8217773 381.7651367,33.1976929 384.3892822,33.1976929 			"/>
+			<line class="st3" x1="389.9016113" y1="33.1976929" x2="453.2939453" y2="33.1976929"/>
+		</g>
+	</g>
+</g>
+</svg>
