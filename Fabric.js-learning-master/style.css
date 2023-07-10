@@ -87,18 +87,18 @@ body {
    
    
 }
-.wrapper-main{
-    position: absolute;
-    right: 8;
-    top: 2;
-    z-index: 0;
-    
-}
-.wrapper{
+#wrapper-main{
     position: absolute;
     right: 8;
     top: 2;
     z-index: 1;
+    
+}
+#wrapper{
+    position: absolute;
+    right: 8;
+    top: 2;
+    z-index: 0;
    
     
 }

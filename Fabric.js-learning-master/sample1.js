@@ -3,6 +3,7 @@ import { FBXLoader } from "./modules/jsm/fbxloader.js";
 import { OrbitControls } from "./modules/OrbitControls.js";
 
 console.clear();
+let flag =true
 
 /**
  * Fabricjs
@@ -10,10 +11,14 @@ console.clear();
  */
 
 var canvas = new fabric.Canvas(document.getElementById("canvas"));
+fabric.Object.prototype.objectCaching = false;
+fabric.devicePixelRatio = 2;
 //const newLayer1 = new fabric.Layer()
 
 //canvas.add(newLayer1)
-var maincanvas = new fabric.Canvas(document.getElementById("maincanvas"));
+var maincanvas = new fabric.Canvas(document.getElementById("maincanvas"), {
+  viewportTransform: [.99, 0, 0, .99, 120, -80]
+});
 maincanvas.backgroundColor = "#f5f5f0";
 maincanvas.selection = false;
 maincanvas.setWidth(512);
@@ -25,6 +30,8 @@ canvas.backgroundColor = "#f5f5f5";
 canvas.selection = false;
 canvas.setWidth(512);
 canvas.setHeight(512);
+console.log(canvas)
+console.log(maincanvas)
 let image;
 const svgs = [
   "front",
@@ -40,6 +47,7 @@ const svgs = [
   "safeZone_side2",
 ];
 // JQUERY
+
 // $("button.pattern").click(function () {
 //   $("div.popup").attr("style", "display:block");
 // });
@@ -109,7 +117,7 @@ svgs.forEach((data) => {
 
       canvas.renderAll();
     },
-    function (item, object) {}
+    function (item, object) { }
   );
 });
 const newGroup = [];
@@ -120,13 +128,18 @@ svgs.forEach((data) => {
       shape = fabric.util.groupSVGElements(objects, options);
       shape.setCoords();
       shape.selectable = false;
+      let leftOffest = canvas.width / 2 - shape.width / 2
+
       if (shape?.id === "front" && !shape?.id?.includes("safeZone")) {
+
+        // shape.left = leftOffest
+        // shape.top = canvas.height /2 - shape.height/2 
         shapePath = new fabric.Path(shape.d, { objectCaching: false });
         shapePath.absolutePositioned = true;
         shape.setCoords();
         shape.selectable = false;
         shape.fill = "#ffffff";
-     
+
         newGroup.push(shape);
         maincanvas.add(shape);
 
@@ -134,7 +147,11 @@ svgs.forEach((data) => {
       }
 
       if (data === "safeZone_front") {
+
+        // shape.top = shape.left -100  
+        // shape.left = shape.left +110  
         newGroup.push(shape);
+
         maincanvas.add(shape);
 
         maincanvas.renderAll();
@@ -146,21 +163,21 @@ svgs.forEach((data) => {
       //     maincanvas.renderAll();
 
       //   }
-       
+
       // })
-     
-     // maincanvas.zoomToPoint({x: 50, y: 50}, 120);
+
+      // maincanvas.zoomToPoint({x: 50, y: 50}, 120);
       canvas.renderAll()
     },
     function (item, object) {
-     
+
     }
   );
 });
 
-if(newGroup.length > 0){
+if (newGroup.length > 0) {
   console.log('enteerd')
- 
+
 
 }
 canvas.on("mouse:dblclick", mouseClick);
@@ -176,7 +193,12 @@ function mouseClick(e) {
           const height = child.getBoundingRect().height;
 
           img.setCoords();
-          img.isImage=true
+          img.isImage = true
+          // let filter = new fabric.Image.filters.Pixelate({
+          //   blocksize: 8
+          // });
+          // img.filters.push(filter);
+          // img.applyFilters();
           canvas.add(
             img.set({
               left: left,
@@ -187,6 +209,7 @@ function mouseClick(e) {
               clipPath: shapePath,
             })
           );
+         
           image = img;
         });
       }
@@ -195,63 +218,80 @@ function mouseClick(e) {
     }
   });
 }
-maincanvas.on('mouse:wheel', function(opt) {
+maincanvas.on('mouse:wheel', function (opt) {
   var delta = opt.e.deltaY;
   var zoom = maincanvas.getZoom();
   zoom *= 0.999 ** delta;
   if (zoom > 20) zoom = 20;
   if (zoom < 0.01) zoom = 0.01;
-  maincanvas.setZoom(zoom);
+  maincanvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
   opt.e.preventDefault();
   opt.e.stopPropagation();
-  const lowerCanvasEl = maincanvas.lowerCanvasEl;
 
-  const width = maincanvas.width;
-  const height = maincanvas.height;
+  maincanvas.requestRenderAll();
+  maincanvas.calcOffset();
+});
 
-  lowerCanvasEl.width = width;
-  lowerCanvasEl.height = height;
-})
 maincanvas.on("mouse:dblclick", clickedMaincanvas);
 function clickedMaincanvas(e) {
-  console.log("reached");
   image && maincanvas.add(image);
  
-  maincanvas.renderAll();
   const object = canvas.getObjects();
-  object.forEach((child)=>{
-   if(child.isImage){
-    image=child
-   }
+  object.forEach((child) => {
+    if (child.isImage) {
+      image = child
+    }
   })
+  maincanvas.renderAll();
   
-  canvas.renderAll()
 }
-// function alignLeft() {
-  
-//   var obj = maincanvas.getObjects();
-//   console.log(obj)
-//   if (obj.length>0) {
-//     console.log("entered")
-    
-//     var bound = obj.getBoundingRect();
-//     let p = {x: (obj.width / 2), y: obj.top}
-//     var invertedMatrix = fabric.util.invertTransform(maincanvas.viewportTransform);
-//     let newp = fabric.util.transformPoint(p, invertedMatrix);
+$('#select').click(function () {
+  flag = false
+  $('#wrapper-main').css({
+    'z-index': '0',
 
-//     obj.set('left', newp.x);
-  
-//     maincanvas.renderAll();
-//   }
-// }
-// alignLeft()
-/**
- * Threejs
- */
+  });
+  $('#wrapper').css({
+    'z-index': '1',
+
+  });
+  canvas._objects.forEach(child => {
+    console.log("inside canvas")
+    child.setCoords()
+  })
+  maincanvas._objects.forEach(child => {
+    console.log("inside main canvas")
+    child.setCoords()
+  })
+  canvas.requestRenderAll();
+  maincanvas.requestRenderAll();
+});
+$('#deselect').click(function () {
+  flag = true
+  $('#wrapper').css({
+    'z-index': '0',
+
+  });
+  $('#wrapper-main').css({
+    'z-index': '1',
+
+  });
+
+  canvas._objects.forEach(child => {
+    console.log("inside canvas")
+    child.setCoords()
+  })
+  maincanvas._objects.forEach(child => {
+    console.log("inside main canvas")
+    child.setCoords()
+  })
+  canvas.requestRenderAll();
+  maincanvas.requestRenderAll();
+});
 
 var containerHeight = "512";
 var containerWidth = "512";
-var camera, renderer, container, scene, texture, material, geometry, cube;
+var camera, renderer, container, scene, texture, material, geometry, cube,texture2;
 
 init();
 animate();
@@ -306,9 +346,11 @@ function init() {
   /**
    * Texture and material
    */
-
-  texture = new THREE.CanvasTexture(document.getElementById("canvas"));
+console.log(flag)
+  texture = flag === true ? new THREE.CanvasTexture(document.getElementById("canvas")) : new THREE.CanvasTexture(document.getElementById("maincanvas"));
   texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+ 
+
   material = new THREE.MeshBasicMaterial({ map: texture });
 
   /**
