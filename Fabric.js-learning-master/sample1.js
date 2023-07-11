@@ -3,21 +3,18 @@ import { FBXLoader } from "./modules/jsm/fbxloader.js";
 import { OrbitControls } from "./modules/OrbitControls.js";
 
 console.clear();
-let flag =true
+let flag = true;
 
 /**
  * Fabricjs
  * @type {fabric}
  */
-
+/* ------------------------------ initial setup ----------------------------- */
 var canvas = new fabric.Canvas(document.getElementById("canvas"));
 fabric.Object.prototype.objectCaching = false;
 fabric.devicePixelRatio = 2;
-//const newLayer1 = new fabric.Layer()
-
-//canvas.add(newLayer1)
 var maincanvas = new fabric.Canvas(document.getElementById("maincanvas"), {
-  viewportTransform: [.99, 0, 0, .99, 120, -80]
+  viewportTransform: [0.99, 0, 0, 0.99, 120, -80],
 });
 maincanvas.backgroundColor = "#f5f5f0";
 maincanvas.selection = false;
@@ -30,8 +27,7 @@ canvas.backgroundColor = "#f5f5f5";
 canvas.selection = false;
 canvas.setWidth(512);
 canvas.setHeight(512);
-console.log(canvas)
-console.log(maincanvas)
+
 let image;
 const svgs = [
   "front",
@@ -46,49 +42,9 @@ const svgs = [
   "safeZone_side1",
   "safeZone_side2",
 ];
-// JQUERY
-
-// $("button.pattern").click(function () {
-//   $("div.popup").attr("style", "display:block");
-// });
-// $("button.deselect").click(function () {
-//   console.log($("button.deselect"))
-//   $("button.deselect").attr("style", "z-index:1");
-//   $("button.select").attr("style", "z-index:0");
-// });
-// $("button.select").click(function () {
-//   $("button.deselect").attr("style", "z-index:0");
-//   $("button.select").attr("style", "z-index:1");
-// });
-// $("div.front").click(function () {
-//   clickedValue = $(this).attr("value");
-//   console.log(clickedValue);
-// });
-// $("div.bottom").click(function () {
-//   clickedValue = $(this).attr("value");
-//   console.log(clickedValue);
-// });
-// $("div.front_pocket").click(function () {
-//   clickedValue = $(this).attr("value");
-//   console.log(clickedValue);
-// });
-// $("div.side1").click(function () {
-//   clickedValue = $(this).attr("value");
-//   console.log(clickedValue);
-// });
-// $("div.side2").click(function () {
-//   clickedValue = $(this).attr("value");
-//   console.log(clickedValue);
-// });
-// $("div.top_pocket").click(function () {
-//   clickedValue = $(this).attr("value");
-//   console.log(clickedValue);
-// });
-// $("button.cancel").click(function () {
-//   $("div.popup").attr("style", "display:none");
-// });
 // fabric.JS
 window.canvas = canvas;
+/* --------------------- creating canvas to load all svg -------------------- */
 var group = [];
 let shapePath;
 svgs.forEach((data) => {
@@ -120,6 +76,7 @@ svgs.forEach((data) => {
     function (item, object) { }
   );
 });
+/* ------------------ creating canvas to load selected svg ------------------ */
 const newGroup = [];
 svgs.forEach((data) => {
   fabric.loadSVGFromURL(
@@ -128,12 +85,9 @@ svgs.forEach((data) => {
       shape = fabric.util.groupSVGElements(objects, options);
       shape.setCoords();
       shape.selectable = false;
-      let leftOffest = canvas.width / 2 - shape.width / 2
+      let leftOffest = canvas.width / 2 - shape.width / 2;
 
       if (shape?.id === "front" && !shape?.id?.includes("safeZone")) {
-
-        // shape.left = leftOffest
-        // shape.top = canvas.height /2 - shape.height/2 
         shapePath = new fabric.Path(shape.d, { objectCaching: false });
         shapePath.absolutePositioned = true;
         shape.setCoords();
@@ -147,39 +101,20 @@ svgs.forEach((data) => {
       }
 
       if (data === "safeZone_front") {
-
-        // shape.top = shape.left -100  
-        // shape.left = shape.left +110  
         newGroup.push(shape);
 
         maincanvas.add(shape);
 
         maincanvas.renderAll();
       }
-      // newGroup.forEach((child)=>{
-      //   if(child != undefined){
-
-      //     child.left=child.left+1
-      //     maincanvas.renderAll();
-
-      //   }
-
-      // })
-
-      // maincanvas.zoomToPoint({x: 50, y: 50}, 120);
-      canvas.renderAll()
+      
+      canvas.renderAll();
     },
-    function (item, object) {
-
-    }
+    function (item, object) { }
   );
 });
 
-if (newGroup.length > 0) {
-  console.log('enteerd')
-
-
-}
+/* ------------------------- click to load the image ------------------------ */
 canvas.on("mouse:dblclick", mouseClick);
 function mouseClick(e) {
   const object = canvas.getObjects();
@@ -192,13 +127,8 @@ function mouseClick(e) {
           const width = child.getBoundingRect().width;
           const height = child.getBoundingRect().height;
 
-          img.setCoords();
-          img.isImage = true
-          // let filter = new fabric.Image.filters.Pixelate({
-          //   blocksize: 8
-          // });
-          // img.filters.push(filter);
-          // img.applyFilters();
+          
+          img.isImage = true;
           canvas.add(
             img.set({
               left: left,
@@ -210,15 +140,16 @@ function mouseClick(e) {
             })
           );
          
-          image = img;
+          image = img
+          img.setCoords();
         });
       }
-      //canvas.zoomToPoint({x: 50, y: 50}, 120);
       canvas.renderAll();
     }
   });
 }
-maincanvas.on('mouse:wheel', function (opt) {
+/* -------------------------- zooming of the canvas ------------------------- */
+maincanvas.on("mouse:wheel", function (opt) {
   var delta = opt.e.deltaY;
   var zoom = maincanvas.getZoom();
   zoom *= 0.999 ** delta;
@@ -232,66 +163,72 @@ maincanvas.on('mouse:wheel', function (opt) {
   maincanvas.calcOffset();
 });
 
-maincanvas.on("mouse:dblclick", clickedMaincanvas);
-function clickedMaincanvas(e) {
-  image && maincanvas.add(image);
- 
-  const object = canvas.getObjects();
-  object.forEach((child) => {
-    if (child.isImage) {
-      image = child
-    }
-  })
+
+/* -------------------------- switching the canvas -------------------------- */
+$("#select").click(function () {
+  canvas.clone(function(clonedCanvas) {
+    
+    let canvasJSON = clonedCanvas.toJSON();
+    
+    canvasJSON.objects.forEach((child)=>{
+      if(child.isImage){
+        
+      }
+    })
+ });
+
+  // flag = false;
+   image && maincanvas.add(image);
   maincanvas.renderAll();
-  
-}
-$('#select').click(function () {
-  flag = false
-  $('#wrapper-main').css({
-    'z-index': '0',
-
+  $("#wrapper-main").css({
+    "z-index": "0",
   });
-  $('#wrapper').css({
-    'z-index': '1',
-
+  $("#wrapper").css({
+    "z-index": "1",
   });
-  canvas._objects.forEach(child => {
-    console.log("inside canvas")
-    child.setCoords()
-  })
-  maincanvas._objects.forEach(child => {
-    console.log("inside main canvas")
-    child.setCoords()
-  })
+  canvas._objects.forEach((child) => {
+    child.setCoords();
+  });
+  maincanvas._objects.forEach((child) => {
+    child.setCoords();
+  });
   canvas.requestRenderAll();
   maincanvas.requestRenderAll();
 });
-$('#deselect').click(function () {
-  flag = true
-  $('#wrapper').css({
-    'z-index': '0',
-
+$("#deselect").click(function () {
+  flag = true;
+  image && canvas.add(image);
+  canvas.renderAll();
+  $("#wrapper").css({
+    "z-index": "0",
   });
-  $('#wrapper-main').css({
-    'z-index': '1',
-
+  $("#wrapper-main").css({
+    "z-index": "1",
   });
 
-  canvas._objects.forEach(child => {
-    console.log("inside canvas")
-    child.setCoords()
-  })
-  maincanvas._objects.forEach(child => {
-    console.log("inside main canvas")
-    child.setCoords()
-  })
+  canvas._objects.forEach((child) => {
+    console.log("inside canvas");
+    child.setCoords();
+  });
+  maincanvas._objects.forEach((child) => {
+    console.log("inside main canvas");
+    child.setCoords();
+  });
   canvas.requestRenderAll();
   maincanvas.requestRenderAll();
 });
-
+/* -------------------------- creating the 3d scene ------------------------- */
 var containerHeight = "512";
 var containerWidth = "512";
-var camera, renderer, container, scene, texture, material, geometry, cube,texture2;
+var camera,
+  renderer,
+  container,
+  scene,
+  texture,
+  material,
+  geometry,
+  cube,
+  texture2;
 
 init();
 animate();
@@ -346,10 +283,12 @@ function init() {
   /**
    * Texture and material
    */
-console.log(flag)
-  texture = flag === true ? new THREE.CanvasTexture(document.getElementById("canvas")) : new THREE.CanvasTexture(document.getElementById("maincanvas"));
+  console.log(flag);
+  texture =
+    flag === true
+      ? new THREE.CanvasTexture(document.getElementById("canvas"))
+      : new THREE.CanvasTexture(document.getElementById("maincanvas"));
   texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
- 
 
   material = new THREE.MeshBasicMaterial({ map: texture });
 
@@ -389,8 +328,8 @@ console.log(flag)
 
 function animate() {
   requestAnimationFrame(animate);
-  canvas.renderAll()
-  maincanvas.renderAll()
+  canvas.renderAll();
+  maincanvas.renderAll();
   // cube.rotation.x += 0.004;
   // cube.rotation.y += 0.001;
   texture.needsUpdate = true;
